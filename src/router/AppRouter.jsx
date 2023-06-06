@@ -2,6 +2,7 @@ import { Route, Navigate, Routes } from 'react-router-dom';
 import ChatPage from '../pages/ChatPage';
 import AuthRouter from './AuthRouter';
 import PublicRoutes from '../helpers/PublicRoutes';
+import ProtectedRoutes from '../helpers/ProtectedRoutes';
 
 function AppRouter() {
   return (
@@ -14,7 +15,14 @@ function AppRouter() {
           </PublicRoutes>
         }
       />
-      <Route path="/" element={<ChatPage />} />
+      <Route
+        path="/"
+        element={
+          <ProtectedRoutes>
+            <ChatPage />
+          </ProtectedRoutes>
+        }
+      />
       <Route path="/*" element={<Navigate to="/" />} />
     </Routes>
   );

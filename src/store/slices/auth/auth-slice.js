@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   uid: null,
-  checking: true,
+  checking: false,
   logged: false,
   username: null,
   email: null,
@@ -12,6 +12,9 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
+    startFetchingData(state) {
+      state.checking = true;
+    },
     login(state, { payload }) {
       state.uid = payload.uid;
       state.checking = false;
@@ -29,6 +32,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { login, logout } = authSlice.actions;
+export const { login, logout, startFetchingData } = authSlice.actions;
 
 export default authSlice.reducer;

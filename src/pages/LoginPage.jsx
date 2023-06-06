@@ -2,7 +2,8 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import useAuth from '../hooks/useAuth';
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../store/slices/auth/thunks';
 
 const schema = yup.object({
   email: yup
@@ -16,7 +17,7 @@ const schema = yup.object({
 });
 
 function LoginPage() {
-  const { loginUser } = useAuth();
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -30,14 +31,14 @@ function LoginPage() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (fields) => {
+  const onSubmit = (fields) => {
     if (fields.rememberme) {
       localStorage.setItem('email', fields.email);
     }
     if (!fields.rememberme) {
       localStorage.removeItem('email');
     }
-    await loginUser({ email: fields.email, password: fields.password });
+    dispatch(loginUser({ email: fields.email, password: fields.password }));
   };
 
   return (
