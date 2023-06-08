@@ -3,7 +3,7 @@ function IncomingMessage() {
     <div className="incoming_msg">
       <div className="incoming_msg_img">
         <img
-          src="https://ptetutorials.com/images/user-profile.png"
+          src="https://img.freepik.com/free-icon/user_318-159711.jpg?w=2000"
           alt="sunil"
         />
       </div>

@@ -2,11 +2,10 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import apiChat from '../../../axios/chat-socket-server';
 import { login, logout, startFetchingData } from './auth-slice';
 import { saveToken } from '../../../helpers/saveToken';
-import Swal from 'sweetalert2';
 
 export const loginUser = createAsyncThunk(
   'auth/user-login',
-  async ({ email, password }, { dispatch }) => {
+  async ({ email, password }, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startFetchingData());
       const { data: axiosData } = await apiChat.post('auth/login', {
@@ -17,16 +16,17 @@ export const loginUser = createAsyncThunk(
       const user = axiosData.data?.user;
       dispatch(login({ ...user }));
       saveToken(token);
+      return { token };
     } catch (error) {
-      Swal.fire('Error', error.response.data.message, 'error');
       dispatch(logout());
+      return rejectWithValue(error.response.data);
     }
   }
 );
 
 export const registerUser = createAsyncThunk(
   'auth/user-register',
-  async ({ email, password, username }, { dispatch }) => {
+  async ({ email, password, username }, { dispatch, rejectWithValue }) => {
     try {
       dispatch(startFetchingData());
       const { data: axiosData } = await apiChat.post('auth/create-user', {
@@ -38,9 +38,31 @@ export const registerUser = createAsyncThunk(
       const user = axiosData.data?.user;
       dispatch(login({ ...user }));
       saveToken(token);
+      return { token };
     } catch (error) {
-      Swal.fire('Error', error.response.data.message, 'error');
       dispatch(logout());
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const renewToken = createAsyncThunk(
+  'auth/renew-token',
+  async ({ token }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startFetchingData());
+      const { data: axiosData } = await apiChat.get('auth/renew-token', {
+        headers: {
+          'x-token': token,
+        },
+      });
+      const newToken = axiosData.data?.token;
+      const user = axiosData.data?.user;
+      dispatch(login({ ...user }));
+      return { newToken };
+    } catch (error) {
+      dispatch(logout());
+      return rejectWithValue(error.response.data);
     }
   }
 );

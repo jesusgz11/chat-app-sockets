@@ -1,9 +1,10 @@
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../store/slices/auth/thunks';
+import Swal from 'sweetalert2';
 
 const schema = yup.object({
   email: yup
@@ -18,6 +19,7 @@ const schema = yup.object({
 
 function LoginPage() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -31,14 +33,21 @@ function LoginPage() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (fields) => {
-    if (fields.rememberme) {
-      localStorage.setItem('email', fields.email);
+  const onSubmit = async (fields) => {
+    try {
+      if (fields.rememberme) {
+        localStorage.setItem('email', fields.email);
+      }
+      if (!fields.rememberme) {
+        localStorage.removeItem('email');
+      }
+      await dispatch(
+        loginUser({ email: fields.email, password: fields.password })
+      ).unwrap();
+      navigate('/');
+    } catch (error) {
+      Swal.fire('Error', error.message, 'error');
     }
-    if (!fields.rememberme) {
-      localStorage.removeItem('email');
-    }
-    dispatch(loginUser({ email: fields.email, password: fields.password }));
   };
 
   return (

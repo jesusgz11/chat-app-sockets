@@ -4,7 +4,7 @@ function SidebarChatItem() {
       <div className="chat_people">
         <div className="chat_img">
           <img
-            src="https://ptetutorials.com/images/user-profile.png"
+            src="https://img.freepik.com/free-icon/user_318-159711.jpg?w=2000"
             alt="sunil"
           />
         </div>

@@ -1,12 +1,25 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../store/slices/auth/auth-slice';
+import { selectUsername } from '../store/selectors/auth-selector';
+
 function SearchBox() {
+  const dispatch = useDispatch();
+  const username = useSelector(selectUsername);
+
+  const onLogout = () => {
+    localStorage.clear();
+    dispatch(logout());
+  };
   return (
     <div className="headind_srch">
       <div className="recent_heading mt-2">
-        <h4>Recientes</h4>
+        <h4>{username}</h4>
       </div>
       <div className="srch_bar">
         <div className="stylish-input-group">
-          <button className="btn text-danger">Salir</button>
+          <button onClick={onLogout} className="btn text-danger">
+            Salir
+          </button>
         </div>
       </div>
     </div>
