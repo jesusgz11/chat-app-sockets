@@ -44,7 +44,9 @@ function LoginPage() {
       await dispatch(
         loginUser({ email: fields.email, password: fields.password })
       ).unwrap();
-      navigate('/');
+      navigate('/', {
+        replace: true,
+      });
     } catch (error) {
       Swal.fire('Error', error.message, 'error');
     }

@@ -35,10 +35,8 @@ function RegisterPage() {
 
   const onSubmit = async ({ email, password, username }) => {
     try {
-      await dispatch(
-        registerUser({ email, password, username })
-      ).unwrap();
-      navigate('/');
+      await dispatch(registerUser({ email, password, username })).unwrap();
+      navigate('/', { replace: true });
     } catch (error) {
       Swal.fire('Error', error.message, 'error');
     }

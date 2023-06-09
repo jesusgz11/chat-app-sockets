@@ -16,7 +16,7 @@ function ProtectedRoutes({ children }) {
         await dispatch(renewToken({ token })).unwrap();
       } catch (error) {
         localStorage.clear();
-        navigate('/auth/login');
+        navigate('/auth/login', { replace: true });
       }
     })();
   }, [token, navigate, dispatch, userId]);
