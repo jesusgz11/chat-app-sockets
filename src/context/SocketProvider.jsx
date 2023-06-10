@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { SocketContext } from './Socket';
 import { useSocket } from '../hooks/useSocket';
 import { selectUserId } from '../store/selectors/auth-selector';
+import { setUsers } from '../store/slices/chat/chat-slice';
 
 const SocketProvider = ({ children }) => {
+  const dispatch = useDispatch();
   const { socket, online, disconnectSocket, connectSocket } = useSocket(
     import.meta.env.VITE_SERVER_URL
   );
@@ -26,6 +28,12 @@ const SocketProvider = ({ children }) => {
       disconnectSocket();
     }
   }, [userId, disconnectSocket]);
+
+  useEffect(() => {
+    socket?.on('users-list', (users = []) => {
+      dispatch(setUsers(users));
+    });
+  }, [socket, dispatch]);
 
   return (
     <SocketContext.Provider value={valueProvider}>
