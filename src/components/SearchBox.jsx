@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../store/slices/auth/auth-slice';
 import { selectUsername } from '../store/selectors/auth-selector';
+import { resetMessages } from '../store/slices/chat/chat-slice';
 
 function SearchBox() {
   const dispatch = useDispatch();
@@ -9,6 +10,7 @@ function SearchBox() {
   const onLogout = () => {
     localStorage.clear();
     dispatch(logout());
+    dispatch(resetMessages());
   };
   return (
     <div className="headind_srch">

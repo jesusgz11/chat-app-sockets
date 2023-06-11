@@ -1,4 +1,6 @@
-function IncomingMessage() {
+import { hourMonth } from '../helpers/hourMonth';
+
+function IncomingMessage({ message, createdAt }) {
   return (
     <div className="incoming_msg">
       <div className="incoming_msg_img">
@@ -9,8 +11,8 @@ function IncomingMessage() {
       </div>
       <div className="received_msg">
         <div className="received_withd_msg">
-          <p>Test which is a new approach to have all solutions</p>
-          <span className="time_date"> 11:01 AM | June 9</span>
+          <p>{message}</p>
+          <span className="time_date">{hourMonth(createdAt)}</span>
         </div>
       </div>
     </div>

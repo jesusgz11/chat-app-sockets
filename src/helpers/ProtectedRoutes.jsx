@@ -9,6 +9,7 @@ function ProtectedRoutes({ children }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userId = useSelector(selectUserId);
+
   useEffect(() => {
     (async () => {
       try {

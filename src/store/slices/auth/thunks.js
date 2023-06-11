@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import apiChat from '../../../axios/chat-socket-server';
 import { login, logout, startFetchingData } from './auth-slice';
 import { saveToken } from '../../../helpers/saveToken';
+import { resetMessages } from '../chat/chat-slice';
 
 export const loginUser = createAsyncThunk(
   'auth/user-login',
@@ -19,6 +20,7 @@ export const loginUser = createAsyncThunk(
       return { token };
     } catch (error) {
       dispatch(logout());
+      dispatch(resetMessages())
       return rejectWithValue(error.response.data);
     }
   }
@@ -40,6 +42,7 @@ export const registerUser = createAsyncThunk(
       saveToken(token);
       return { token };
     } catch (error) {
+      dispatch(resetMessages())
       dispatch(logout());
       return rejectWithValue(error.response.data);
     }
@@ -62,6 +65,7 @@ export const renewToken = createAsyncThunk(
       return { newToken };
     } catch (error) {
       dispatch(logout());
+      dispatch(resetMessages())
       return rejectWithValue(error.response.data);
     }
   }

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SocketContext } from './Socket';
 import { useSocket } from '../hooks/useSocket';
 import { selectUserId } from '../store/selectors/auth-selector';
-import { setUsers } from '../store/slices/chat/chat-slice';
+import { setPersonalMessage, setUsers } from '../store/slices/chat/chat-slice';
 
 const SocketProvider = ({ children }) => {
   const dispatch = useDispatch();
@@ -32,6 +32,12 @@ const SocketProvider = ({ children }) => {
   useEffect(() => {
     socket?.on('users-list', (users = []) => {
       dispatch(setUsers(users));
+    });
+  }, [socket, dispatch]);
+
+  useEffect(() => {
+    socket?.on('personal-message', (message) => {
+      dispatch(setPersonalMessage(message));
     });
   }, [socket, dispatch]);
 
